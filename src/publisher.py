@@ -15,7 +15,14 @@ def publishing(project_id, topic_id, message=None):
     data = message.encode("ascii")
 
     # When you publish a message, the client returns a future.
+<<<<<<< HEAD
     api_future = publisher.publish(topic_path, data)
+=======
+    api_future = client.publish(
+        topic_path,
+        data,
+    )
+>>>>>>> Added push subscription creation option and flask api endpoint.
     message_id = api_future.result()
 
     print(f"Published {data} to {topic_path}: {message_id}")
