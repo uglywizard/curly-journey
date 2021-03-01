@@ -4,7 +4,7 @@ import time
 from google.cloud import pubsub_v1
 
 
-def subscribe(project_id, subscription_id, sleep=None):
+def subscription(project_id, subscription_id, sleep=None):
     """Receives messages from a Pub/Sub subscription."""
 
     def callback(message):
@@ -43,4 +43,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    subscribe(args.project_id, args.subscription_id, args.sleep)
+    subscription(args.project_id, args.subscription_id, args.sleep)

@@ -1,9 +1,10 @@
 import argparse
+import os
 
 from google.cloud import pubsub_v1
 
 
-def publish(project_id, topic_id, message=None):
+def publishing(project_id, topic_id, message=None):
     """Publishes a message to a Pub/Sub topic."""
     # Initialize a Publisher client.
     publisher = pubsub_v1.PublisherClient()
@@ -37,4 +38,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    publish(args.project_id, args.topic_id, args.message)
+    publishing(args.project_id, args.topic_id, args.message)
