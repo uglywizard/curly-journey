@@ -6,9 +6,8 @@ from google.cloud import pubsub_v1
 def create_subscription(project_id, topic_id, subscription_id):
     """Create a new pull subscription on the given topic."""
 
-    publisher = pubsub_v1.PublisherClient()
     subscriber = pubsub_v1.SubscriberClient()
-    topic_path = publisher.topic_path(project_id, topic_id)
+    topic_path = subscriber.topic_path(project_id, topic_id)
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
     # Wrap the subscriber in a 'with' block to automatically call close() to
@@ -29,7 +28,7 @@ def create_topic(project_id, topic_id):
 
     topic = publisher.create_topic(request={"name": topic_path})
 
-    print("Created topic: {}".format(topic.name))
+    print(f"Created topic: {topic.name}")
 
 
 if __name__ == "__main__":

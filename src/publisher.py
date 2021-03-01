@@ -3,18 +3,18 @@ import argparse
 from google.cloud import pubsub_v1
 
 
-def pub(project_id, topic_id, message=None):
+def publish(project_id, topic_id, message=None):
     """Publishes a message to a Pub/Sub topic."""
     # Initialize a Publisher client.
-    client = pubsub_v1.PublisherClient()
+    publisher = pubsub_v1.PublisherClient()
     # Create a fully qualified identifier of form `projects/{project_id}/topics/{topic_id}`
-    topic_path = client.topic_path(project_id, topic_id)
+    topic_path = publisher.topic_path(project_id, topic_id)
 
     # Data sent to Cloud Pub/Sub must be a bytestring.
     data = message.encode("ascii")
 
     # When you publish a message, the client returns a future.
-    api_future = client.publish(topic_path, data)
+    api_future = publisher.publish(topic_path, data)
     message_id = api_future.result()
 
     print(f"Published {data} to {topic_path}: {message_id}")
@@ -37,4 +37,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    pub(args.project_id, args.topic_id, args.message)
+    publish(args.project_id, args.topic_id, args.message)
