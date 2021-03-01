@@ -36,7 +36,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "sleep",
         default=30,
-        help="Value in seconds to mitigate listening on topic subscription updates.",
+        nargs="?",
+        help="Value in seconds to mitigate listening on topic subscription updates. (Default = 30)",
         type=int,
     )
 
