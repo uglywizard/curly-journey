@@ -20,8 +20,8 @@ Before run src/publisher.py or src/subscriber.py we need to create a fake topic 
 
 - `python run src/gcp_fake_cli.py -h project_id {create-topic|create-subscription}` 
   - project_id: mandatory, setted in gcloud emulator start step.
-  - create-topic: require a 'topic_id' (example: 'example_topic') on the previously defined 'project_id' (example: 'example_pub_sub create-topic example_topic')
-  - create-subscription: require a 'topic_id' (previously defined) and a 'subscription_id' for the topic (example: 'example_pub_sub create-subscription example_topic example_subscription) 
+  - create-topic: require a 'topic_id' (example: 'example_topic') on the previously defined 'project_id' (example: 'example-pub-sub create-topic example_topic')
+  - create-subscription: require a 'topic_id' (previously defined) and a 'subscription_id' for the topic (example: 'example-pub-sub create-subscription example_topic example_subscription) 
 
 Now is possible to emulate a pull subscription flow. `src/publisher.py` and `src/subscriber.py` need to run separately.
 
@@ -32,13 +32,16 @@ After topic and subscription creation is possible to run scripts correctly.
 ### Publisher
 
 - `python src/publisher.py -h [-m MESSAGE] project_id topic_id`
+  - project_id: previously defined project_id
+  - topic_id: previously defined topic_id
+  - message: custom message to publish (Default='Hello, World!')
   
 ### Subscriber
 
 - `python src/subscriber -h project_id subscription_id sleep`
   - project_id: previously defined project_id
   - subscription_id: previously defined subscription_id
-  - sleep: a integer value that mitigates while cycle execution while listening on topic subscription updates (default=30)
+  - sleep: a integer value that mitigates while cycle execution while listening on topic subscription updates (Default=30)
 
 Scripts run asynchronously as expected from gcloud PUB/SUB, if publisher has published something, subscriber will receieve all the 
 messages in queue 'till that point in time (all messages are retained indefinitely in the emulator context, as stated [here](https://cloud.google.com/pubsub/docs/emulator#emulator_command-line_arguments)).
