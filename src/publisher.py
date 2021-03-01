@@ -3,7 +3,7 @@ import argparse
 from google.cloud import pubsub_v1
 
 
-def pub(project_id, topic_id, message="Hello, World!"):
+def pub(project_id, topic_id, message=None):
     """Publishes a message to a Pub/Sub topic."""
     # Initialize a Publisher client.
     client = pubsub_v1.PublisherClient()
@@ -30,6 +30,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-m",
         "--message",
+        default="Hello, World!",
         help="Insert a custom message (Default = 'Hello, World!')",
         type=str,
     )
