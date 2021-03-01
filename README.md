@@ -19,7 +19,7 @@ At this point we are good to go for the next steps:
 Before run src/publisher.py or src/subscriber.py we need to create a fake topic and a fake subscription on the emulator:
 
 - `python run src/gcp_fake_cli.py -h project_id {create-topic|create-subscription}` 
-  - project_id: mandatory, the name is up to you (example: 'example_pub_sub')
+  - project_id: mandatory, setted in gcloud emulator start step.
   - create-topic: require a 'topic_id' (example: 'example_topic') on the previously defined 'project_id' (example: 'example_pub_sub create-topic example_topic')
   - create-subscription: require a 'topic_id' (previously defined) and a 'subscription_id' for the topic (example: 'example_pub_sub create-subscription example_topic example_subscription) 
 
