@@ -77,7 +77,6 @@ if __name__ == "__main__":
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("project_id", help="Google Cloud project ID")
-    except (GoogleAPICallError, RetryError, ValueError, Exception) as err:
 
     subparsers = parser.add_subparsers(dest="command")
 
