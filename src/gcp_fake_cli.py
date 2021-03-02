@@ -4,7 +4,6 @@ from google.cloud import pubsub_v1
 from google.api_core.exceptions import GoogleAPICallError, RetryError
 
 
-<<<<<<< HEAD
 def list_topics(publisher, project_id):
     """Lists all Pub/Sub topics in the given project."""
 
@@ -35,14 +34,27 @@ def delete_topic(publisher, project_id, topic_id):
 
 
 def create_subscription(subscriber, project_id, topic_id, subscription_id):
-=======
-def create_push_subscription(project_id, topic_id, subscription_id, endpoint):
-    """Create a new push subscription on the given topic."""
-    from google.cloud import pubsub_v1
+    """Create a new pull subscription on the given topic."""
 
-    publisher = pubsub_v1.PublisherClient()
-    subscriber = pubsub_v1.SubscriberClient()
-    topic_path = publisher.topic_path(project_id, topic_id)
+    topic_path = subscriber.topic_path(project_id, topic_id)
+    subscription_path = subscriber.subscription_path(project_id, subscription_id)
+
+    # Wrap the subscriber in a 'with' block to automatically call close() to
+    # close the underlying gRPC channel when done.
+    with subscriber:
+        subscription = subscriber.create_subscription(
+            request={"name": subscription_path, "topic": topic_path}
+        )
+
+    print(f"Subscription created: {subscription}")
+
+
+def create_push_subscription(
+    subscriber, project_id, topic_id, subscription_id, endpoint
+):
+    """Create a new push subscription on the given topic."""
+
+    topic_path = subscriber.topic_path(project_id, topic_id)
     subscription_path = subscriber.subscription_path(project_id, subscription_id)
 
     push_config = pubsub_v1.types.PushConfig(push_endpoint=endpoint)
@@ -60,23 +72,6 @@ def create_push_subscription(project_id, topic_id, subscription_id, endpoint):
 
     print(f"Push subscription created: {subscription}.")
     print(f"Endpoint for subscription is: {endpoint}")
-
-
-def create_subscription(project_id, topic_id, subscription_id):
->>>>>>> Added push subscription creation option and flask api endpoint.
-    """Create a new pull subscription on the given topic."""
-
-    topic_path = subscriber.topic_path(project_id, topic_id)
-    subscription_path = subscriber.subscription_path(project_id, subscription_id)
-
-    # Wrap the subscriber in a 'with' block to automatically call close() to
-    # close the underlying gRPC channel when done.
-    with subscriber:
-        subscription = subscriber.create_subscription(
-            request={"name": subscription_path, "topic": topic_path}
-        )
-
-    print(f"Subscription created: {subscription}")
 
 
 def detach_subscription(publisher, subscriber, project_id, subscription_id):
@@ -129,12 +124,6 @@ if __name__ == "__main__":
     create_subscription_parser.add_argument("topic_id")
     create_subscription_parser.add_argument("subscription_id")
 
-<<<<<<< HEAD
-    detach_subscription_parser = subparsers.add_parser(
-        "detach-subscription", help=detach_subscription.__doc__
-    )
-    detach_subscription_parser.add_argument("subscription_id")
-=======
     create_push_subscription_parser = subparsers.add_parser(
         "create-push-subscription",
         help=create_push_subscription.__doc__,
@@ -142,16 +131,27 @@ if __name__ == "__main__":
     create_push_subscription_parser.add_argument("topic_id")
     create_push_subscription_parser.add_argument("subscription_id")
     create_push_subscription_parser.add_argument("endpoint")
->>>>>>> Added push subscription creation option and flask api endpoint.
+
+    detach_subscription_parser = subparsers.add_parser(
+        "detach-subscription", help=detach_subscription.__doc__
+    )
+    detach_subscription_parser.add_argument("subscription_id")
 
     args = parser.parse_args()
 
     if args.command == "create-topic":
         create_topic(publisher, args.project_id, args.topic_id)
     elif args.command == "create-subscription":
-<<<<<<< HEAD
         create_subscription(
             subscriber, args.project_id, args.topic_id, args.subscription_id
+        )
+    elif args.command == "create-push-subscription":
+        create_push_subscription(
+            subscriber,
+            args.project_id,
+            args.topic_id,
+            args.subscription_id,
+            args.endpoint,
         )
     elif args.command == "list-topics":
         list_topics(args.project_id)
@@ -160,10 +160,4 @@ if __name__ == "__main__":
     elif args.command == "detach-subscription":
         detach_subscription(
             publisher, subscriber, args.project_id, args.subscription_id
-=======
-        create_subscription(args.project_id, args.topic_id, args.subscription_id)
-    elif args.command == "create-push-subscription":
-        create_push_subscription(
-            args.project_id, args.topic_id, args.subscription_id, args.endpoint
->>>>>>> Added push subscription creation option and flask api endpoint.
         )
