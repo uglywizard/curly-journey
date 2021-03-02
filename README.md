@@ -18,10 +18,13 @@ At this point we are good to go for the next steps:
 
 Before run src/publisher.py or src/subscriber.py we need to create a fake topic and a fake subscription on the emulator:
 
-- `python run src/gcp_fake_cli.py -h project_id {create-topic|create-subscription}` 
+- `python run src/gcp_fake_cli.py -h project_id {create-topic|create-subscription|list-topics|delete-topic|detach-subscription}` 
   - project_id: mandatory, setted in gcloud emulator start step.
   - create-topic: require a 'topic_id' (example: 'example_topic') on the previously defined 'project_id' (example: 'example-pub-sub create-topic example_topic')
   - create-subscription: require a 'topic_id' (previously defined) and a 'subscription_id' for the topic (example: 'example-pub-sub create-subscription example_topic example_subscription) 
+  - list-topics: no additional arguments required, only 'project_id' (example: 'example-pub-sub list-topics)
+  - delete-topic: require a 'topic_id' previously defined (example: example-pub-sub delete-topic topic_id)
+  - detach-subscription: require a 'subscription_id' previously defined on a 'topic_id' (example: example-pub-sub detach-subscription subscription_id)
 
 Now is possible to emulate a pull subscription flow. `src/publisher.py` and `src/subscriber.py` need to run separately.
 
