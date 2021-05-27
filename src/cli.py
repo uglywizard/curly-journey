@@ -49,6 +49,31 @@ def create_subscription(subscriber, project_id, topic_id, subscription_id):
     print(f"Subscription created: {subscription}")
 
 
+def create_push_subscription(
+    subscriber, project_id, topic_id, subscription_id, endpoint
+):
+    """Create a new push subscription on the given topic."""
+
+    topic_path = subscriber.topic_path(project_id, topic_id)
+    subscription_path = subscriber.subscription_path(project_id, subscription_id)
+
+    push_config = pubsub_v1.types.PushConfig(push_endpoint=endpoint)
+
+    # Wrap the subscriber in a 'with' block to automatically call close() to
+    # close the underlying gRPC channel when done.
+    with subscriber:
+        subscription = subscriber.create_subscription(
+            request={
+                "name": subscription_path,
+                "topic": topic_path,
+                "push_config": push_config,
+            }
+        )
+
+    print(f"Push subscription created: {subscription}.")
+    print(f"Endpoint for subscription is: {endpoint}")
+
+
 def detach_subscription(publisher, subscriber, project_id, subscription_id):
     """Detaches a subscription from a topic and drops all messages retained in it."""
 
@@ -99,6 +124,14 @@ if __name__ == "__main__":
     create_subscription_parser.add_argument("topic_id")
     create_subscription_parser.add_argument("subscription_id")
 
+    create_push_subscription_parser = subparsers.add_parser(
+        "create-push-subscription",
+        help=create_push_subscription.__doc__,
+    )
+    create_push_subscription_parser.add_argument("topic_id")
+    create_push_subscription_parser.add_argument("subscription_id")
+    create_push_subscription_parser.add_argument("endpoint")
+
     detach_subscription_parser = subparsers.add_parser(
         "detach-subscription", help=detach_subscription.__doc__
     )
@@ -112,8 +145,16 @@ if __name__ == "__main__":
         create_subscription(
             subscriber, args.project_id, args.topic_id, args.subscription_id
         )
+    elif args.command == "create-push-subscription":
+        create_push_subscription(
+            subscriber,
+            args.project_id,
+            args.topic_id,
+            args.subscription_id,
+            args.endpoint,
+        )
     elif args.command == "list-topics":
-        list_topics(args.project_id)
+        list_topics(publisher, args.project_id)
     elif args.command == "delete-topic":
         delete_topic(publisher, args.project_id, args.topic_id)
     elif args.command == "detach-subscription":
