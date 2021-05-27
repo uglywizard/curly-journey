@@ -1,6 +1,7 @@
 import argparse
 import time
 
+from base64 import b64decode
 from google.cloud import pubsub_v1
 
 
@@ -8,7 +9,7 @@ def subscription(project_id, subscription_id, sleep=None):
     """Receives messages from a Pub/Sub subscription."""
 
     def callback(message):
-        print(f"Received message: {message.data.decode('ascii')}")
+        print(f"Received message: {b64decode(message.data)}")
         if message.attributes:
             print("Message attributes:")
             for attr in message.attributes:

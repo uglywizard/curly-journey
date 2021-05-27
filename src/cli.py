@@ -154,7 +154,7 @@ if __name__ == "__main__":
             args.endpoint,
         )
     elif args.command == "list-topics":
-        list_topics(args.project_id)
+        list_topics(publisher, args.project_id)
     elif args.command == "delete-topic":
         delete_topic(publisher, args.project_id, args.topic_id)
     elif args.command == "detach-subscription":
