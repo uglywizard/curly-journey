@@ -26,6 +26,13 @@ Before run src/publisher.py or src/subscriber.py we need to create a fake topic 
   - delete-topic: require a 'topic_id' previously defined (example: example-pub-sub delete-topic example-topic)
   - detach-subscription: require a 'subscription_id' previously defined on a 'topic_id' (example: example-pub-sub detach-subscription example-subscription)
 
+#### Example
+
+```
+poetry run python src/cli.py project_id create-topic topic_id
+poetry run python src/cli.py project_id create-push-subscription topic_id subscription_id endpoint_url
+```
+
 Now is possible to emulate a pull subscription flow. `src/publisher.py` and `src/subscriber.py` need to run separately.
 
 ## Run scripts
