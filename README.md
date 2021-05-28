@@ -8,8 +8,6 @@ some steps to cover for a correct execution:
 - Install and setup gcloud PUB/SUB emulator on your machine (as explained [here](https://cloud.google.com/pubsub/docs/emulator))
 - As explained on gc docs, be sure to export the needed env vars:
   - `gcloud beta emulators pubsub env-init`
-- An IAM key json file is needed for the correct execution of the application (more on credentials creation [here](https://cloud.google.com/pubsub/docs/building-pubsub-messaging-system#create_service_account_credentials))
-  - `export GOOGLE_APPLICATION_CREDENTIALS='/path/to/key/.json'`
 
 At this point we are good to go for the next steps:
 
@@ -18,7 +16,7 @@ At this point we are good to go for the next steps:
 
 Before run src/publisher.py or src/subscriber.py we need to create a fake topic and a fake subscription on the emulator:
 
-- `python run src/gcp_fake_cli.py -h project_id {create-topic|create-subscription|create-push-subscription|list-topics|delete-topic|detach-subscription}` 
+- `python run src/cli.py -h project_id {create-topic|create-subscription|create-push-subscription|list-topics|delete-topic|detach-subscription}` 
   - project_id: mandatory, setted in gcloud emulator start step.
   - create-topic: require a 'topic_id' (example: 'example_topic') on the previously defined 'project_id' (example: 'example-pub-sub create-topic example-topic')
   - create-subscription: require a 'topic_id' (previously defined) and a 'subscription_id' for the topic (example: 'example-pub-sub create-subscription example-topic example-subscription) 
@@ -61,7 +59,6 @@ messages in queue 'till that point in time (all messages are retained indefinite
 
 To speed up export of env var you can create an .env file with this vars and source it when needed.
 ```
-export GOOGLE_APPLICATION_CREDENTIALS='./.keys/example_pub_sub.json'
 export FLASK_APP=src/api/main.py
 export FLASK_ENV=development
 ```
