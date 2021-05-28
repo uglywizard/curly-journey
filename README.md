@@ -10,6 +10,7 @@ some steps to cover for a correct execution:
   - `gcloud beta emulators pubsub env-init`
 - Alternatively use `docker-compose -f docker-compose.yml up -d` to run a container with a google cloud pubsub emulator (env variables are already defined).
 
+
 At this point we are good to go for the next steps:
 
 - `poetry install` 
