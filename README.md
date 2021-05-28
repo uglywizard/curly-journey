@@ -8,6 +8,7 @@ some steps to cover for a correct execution:
 - Install and setup gcloud PUB/SUB emulator on your machine (as explained [here](https://cloud.google.com/pubsub/docs/emulator))
 - As explained on gc docs, be sure to export the needed env vars:
   - `gcloud beta emulators pubsub env-init`
+- Alternatively use `docker-compose -f docker-compose.yml up -d` to run a container with a google cloud pubsub emulator (env variables are already defined).
 
 At this point we are good to go for the next steps:
 
