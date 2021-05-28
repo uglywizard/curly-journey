@@ -8,6 +8,8 @@ some steps to cover for a correct execution:
 - Install and setup gcloud PUB/SUB emulator on your machine (as explained [here](https://cloud.google.com/pubsub/docs/emulator))
 - As explained on gc docs, be sure to export the needed env vars:
   - `gcloud beta emulators pubsub env-init`
+- Alternatively use `docker-compose -f docker-compose.yml up -d` to run a container with a google cloud pubsub emulator (env variables are already defined).
+
 
 At this point we are good to go for the next steps:
 
@@ -24,6 +26,13 @@ Before run src/publisher.py or src/subscriber.py we need to create a fake topic 
   - list-topics: no additional arguments required, only 'project_id' (example: example-pub-sub list-topics)
   - delete-topic: require a 'topic_id' previously defined (example: example-pub-sub delete-topic example-topic)
   - detach-subscription: require a 'subscription_id' previously defined on a 'topic_id' (example: example-pub-sub detach-subscription example-subscription)
+
+#### Example
+
+```
+poetry run python src/cli.py project_id create-topic topic_id
+poetry run python src/cli.py project_id create-push-subscription topic_id subscription_id endpoint_url
+```
 
 Now is possible to emulate a pull subscription flow. `src/publisher.py` and `src/subscriber.py` need to run separately.
 

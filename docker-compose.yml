@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  emulator:
+    image: girbons/gcloud-pubsub-emulator
+    environment:
+      - PUBSUB_PROJECT_ID="example-project"
+    ports:
+      - "8085:8085"
